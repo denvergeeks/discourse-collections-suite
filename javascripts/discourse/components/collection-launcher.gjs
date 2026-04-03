@@ -1,6 +1,7 @@
 import Component from "@glimmer/component";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
+import { on } from "@ember/modifier";
 import DButton from "discourse/components/d-button";
 import launcherState from "../lib/collections-launcher-state";
 
