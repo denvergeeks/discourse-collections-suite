@@ -961,100 +961,42 @@ export default apiInitializer("1.24.0", (api) => {
       });
     };
 
-    const setupIframeHandlers = (container) => {
-      const iframe = container.querySelector(".external-topic-iframe");
-      const loadingDiv = container.querySelector(".iframe-loading");
-      const iframeShell = container.querySelector(".external-url-iframe-shell");
-    
-      if (
-        !iframe ||
-        !iframeShell ||
-        !container.classList.contains("external-url-content-wrapper")
-      ) {
-        return;
-      }
-    
-      const modal = container.closest(".collections-nav-modal");
-      const contentShell = container.closest(".modal-content-area");
-      const contentHeader = contentShell?.querySelector(".content-header");
-    
-      const adjustIframe = () => {
-        if (!modal || !contentShell) {
-          return;
-        }
-    
-        const modalRect = modal.getBoundingClientRect();
-        const headerHeight = contentHeader?.offsetHeight || 0;
-        const footerHeight =
-          modal.querySelector(".modal-nav-footer")?.offsetHeight || 0;
-    
-        const shellStyles = getComputedStyle(contentShell);
-        const shellVerticalPadding =
-          parseFloat(shellStyles.paddingTop || 0) +
-          parseFloat(shellStyles.paddingBottom || 0);
-    
-        const containerStyles = getComputedStyle(container);
-        const containerVerticalPadding =
-          parseFloat(containerStyles.paddingTop || 0) +
-          parseFloat(containerStyles.paddingBottom || 0);
-    
-        const headerBlockHeight =
-          container.querySelector(".external-url-header")?.offsetHeight || 0;
-    
-        const availableHeight =
-          modalRect.height -
-          headerHeight -
-          footerHeight -
-          shellVerticalPadding -
-          containerVerticalPadding -
-          headerBlockHeight;
-    
-        iframeShell.style.position = "relative";
-        iframeShell.style.height = `${Math.max(320, Math.floor(availableHeight))}px`;
-        iframeShell.style.minHeight = "0";
-        iframeShell.style.overflow = "hidden";
-        iframeShell.style.visibility = "visible";
-    
-        iframe.style.position = "absolute";
-        iframe.style.inset = "0";
-        iframe.style.width = "100%";
-        iframe.style.height = "100%";
-        iframe.style.border = "none";
-        iframe.style.display = "block";
-      };
-    
-      const onResize = throttle(adjustIframe, 100);
-    
-      const onLoad = () => {
-        if (loadingDiv) {
-          loadingDiv.style.display = "none";
-        }
-    
-        adjustIframe();
-        window.addEventListener("resize", onResize);
-      };
-    
-      const onError = () => {
-        if (loadingDiv) {
-          loadingDiv.style.display = "none";
-        }
-    
-        iframeShell.style.visibility = "visible";
-        iframe.style.display = "none";
-        window.removeEventListener("resize", onResize);
-      };
-    
-      iframeShell.style.visibility = "hidden";
-    
-      iframe.addEventListener("load", onLoad, { once: true });
-      iframe.addEventListener("error", onError, { once: true });
-    
-      window.requestAnimationFrame(adjustIframe);
-    
-      addCleanup(() => {
-        window.removeEventListener("resize", onResize);
-      });
-    };
+const setupIframeHandlers = (container) => {
+  const iframe = container.querySelector(".external-topic-iframe");
+  const loadingDiv = container.querySelector(".iframe-loading");
+  const iframeShell = container.querySelector(".external-url-iframe-shell");
+
+  if (
+    !iframe ||
+    !iframeShell ||
+    !container.classList.contains("external-url-content-wrapper")
+  ) {
+    return;
+  }
+
+  const onLoad = () => {
+    if (loadingDiv) {
+      loadingDiv.style.display = "none";
+    }
+
+    iframeShell.style.visibility = "visible";
+  };
+
+  const onError = () => {
+    if (loadingDiv) {
+      loadingDiv.style.display = "none";
+    }
+
+    iframeShell.style.visibility = "visible";
+    iframe.style.display = "none";
+  };
+
+  iframeShell.style.visibility = "hidden";
+  iframe.style.display = "block";
+
+  iframe.addEventListener("load", onLoad, { once: true });
+  iframe.addEventListener("error", onError, { once: true });
+};
 
     const fetchTopicJson = async (topicId, requestId, mode) => {
       const response = await fetch(`/t/${topicId}.json`);
