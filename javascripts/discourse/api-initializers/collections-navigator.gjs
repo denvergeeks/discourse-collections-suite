@@ -233,6 +233,28 @@ export default apiInitializer("1.24.0", (api) => {
     document.body.classList.remove("collections-modal-open");
   }
 
+  function syncSidebarRailState(modal) {
+    if (!modal) {
+      return;
+    }
+
+    const currentWidth = getCssPxNumber(
+      modal,
+      "--collections-sidebar-width",
+      320
+    );
+    const railWidth = getCssPxNumber(
+      modal,
+      "--collections-sidebar-rail-width",
+      72
+    );
+
+    modal.classList.toggle(
+      "collections-sidebar-icon-only",
+      currentWidth <= railWidth + 4
+    );
+  }
+
   function cleanupExistingUi() {
     currentCleanup?.();
     currentCleanup = null;
@@ -277,7 +299,7 @@ export default apiInitializer("1.24.0", (api) => {
     resizer.setAttribute("role", "separator");
     resizer.setAttribute("aria-orientation", "vertical");
     resizer.setAttribute("aria-label", "Resize collection sidebar");
-    resizer.setAttribute("aria-valuemin", "240");
+    resizer.setAttribute("aria-valuemin", "72");
     resizer.tabIndex = 0;
 
     splitBody.insertBefore(resizer, contentArea);
@@ -311,7 +333,7 @@ export default apiInitializer("1.24.0", (api) => {
       const minWidth = getCssPxNumber(
         modal,
         "--collections-sidebar-min-width",
-        240
+        72
       );
       const maxWidthFallback = Math.max(
         minWidth,
@@ -333,6 +355,7 @@ export default apiInitializer("1.24.0", (api) => {
         const nextWidth = clamp(proposed, minWidth, maxWidth);
         modal.style.setProperty("--collections-sidebar-width", `${nextWidth}px`);
         resizer.setAttribute("aria-valuenow", String(Math.round(nextWidth)));
+        syncSidebarRailState(modal);
       };
 
       updateWidth(event.clientX);
@@ -373,7 +396,7 @@ export default apiInitializer("1.24.0", (api) => {
       const minWidth = getCssPxNumber(
         modal,
         "--collections-sidebar-min-width",
-        240
+        72
       );
       const splitBody = modal.querySelector(".modal-body-split");
       const splitRect = splitBody?.getBoundingClientRect();
@@ -407,6 +430,7 @@ export default apiInitializer("1.24.0", (api) => {
       modal.style.setProperty("--collections-sidebar-width", `${nextWidth}px`);
       resizer.setAttribute("aria-valuenow", String(Math.round(nextWidth)));
       resizer.setAttribute("aria-valuemax", String(Math.round(maxWidth)));
+      syncSidebarRailState(modal);
     };
 
     document.addEventListener("pointerdown", onPointerDown);
@@ -693,6 +717,7 @@ export default apiInitializer("1.24.0", (api) => {
     const modalPanel = modalOverlay.querySelector(".collections-nav-modal");
     ensureSidebarResizer(modalPanel);
     bindSidebarResizer();
+    syncSidebarRailState(modalPanel);
 
     const contentArea = modalOverlay.querySelector(".cooked-content");
     if (cookedNode && contentArea) {
@@ -805,6 +830,8 @@ export default apiInitializer("1.24.0", (api) => {
         topicSliderShell?.classList.toggle("collapsed", sidebarOpen);
       }
 
+      syncSidebarRailState(modalPanel);
+
       window.requestAnimationFrame(() => {
         syncSliderEdgeState();
         scrollSliderToActive();
@@ -823,6 +850,8 @@ export default apiInitializer("1.24.0", (api) => {
         modalPanel?.classList.toggle("collections-sidebar-open", open);
         topicSliderShell?.classList.toggle("collapsed", open);
       }
+
+      syncSidebarRailState(modalPanel);
 
       window.requestAnimationFrame(() => {
         syncSliderEdgeState();
@@ -919,6 +948,7 @@ export default apiInitializer("1.24.0", (api) => {
 
       rerenderSidebarList(index);
       rerenderSlider(index);
+      syncSidebarRailState(modalPanel);
 
       window.requestAnimationFrame(() => {
         scrollSliderToActive();
@@ -1134,6 +1164,7 @@ export default apiInitializer("1.24.0", (api) => {
     const onResize = throttle(() => {
       syncSliderEdgeState();
       scrollSliderToActive();
+      syncSidebarRailState(modalPanel);
     }, 50);
 
     window.addEventListener("resize", onResize);
@@ -1323,6 +1354,8 @@ export default apiInitializer("1.24.0", (api) => {
 
     syncLauncherState();
     syncSliderEdgeState();
+    syncSidebarRailState(modalPanel);
+
     debug("navigator built", {
       collectionName,
       currentIndex,
