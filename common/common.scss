@@ -24,6 +24,7 @@ body::before {
   &[data-placement="mobile-sticky-bottom"] {
     position: relative;
     display: block;
+    display: flex;
     margin: 0 0 1rem;
   }
 }
