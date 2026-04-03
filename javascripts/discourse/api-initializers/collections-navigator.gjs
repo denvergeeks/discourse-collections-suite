@@ -28,7 +28,10 @@ export default apiInitializer("1.24.0", (api) => {
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <use href="#collections-suite-open-external-link"></use>
+      <path
+        fill="currentColor"
+        d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l82.7 0L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3l0 82.7c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160c0-17.7-14.3-32-32-32L320 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
+      />
     </svg>
   `;
 
@@ -220,6 +223,16 @@ export default apiInitializer("1.24.0", (api) => {
     api.applyDecoratorsToElement?.(element);
   }
 
+  function lockDocumentScroll() {
+    document.documentElement.classList.add("collections-modal-open");
+    document.body.classList.add("collections-modal-open");
+  }
+
+  function unlockDocumentScroll() {
+    document.documentElement.classList.remove("collections-modal-open");
+    document.body.classList.remove("collections-modal-open");
+  }
+
   function cleanupExistingUi() {
     currentCleanup?.();
     currentCleanup = null;
@@ -240,16 +253,6 @@ export default apiInitializer("1.24.0", (api) => {
     document.body.classList.remove("collections-launcher-expanded");
     document.body.classList.remove("collections-is-resizing");
     unlockDocumentScroll();
-  }
-
-  function lockDocumentScroll() {
-    document.documentElement.classList.add("collections-modal-open");
-    document.body.classList.add("collections-modal-open");
-  }
-
-  function unlockDocumentScroll() {
-    document.documentElement.classList.remove("collections-modal-open");
-    document.body.classList.remove("collections-modal-open");
   }
 
   function ensureSidebarResizer(modal) {
@@ -464,6 +467,16 @@ export default apiInitializer("1.24.0", (api) => {
 
   function loadExternalContent(url) {
     return `
+      <div class="external-url-header">
+        <h4>
+          <a href="${escapeHtml(
+            url
+          )}" target="_blank" rel="noopener noreferrer" class="external-url-link">
+            ${escapeHtml(url.replace(/^https?:\/\//, ""))}
+            ${externalLinkIcon}
+          </a>
+        </h4>
+      </div>
       <div class="iframe-loading">Loading external content...</div>
       <iframe
         src="${escapeHtml(url)}"
@@ -504,8 +517,7 @@ export default apiInitializer("1.24.0", (api) => {
 
     const collectionTitleEl = document.querySelector(".collection-sidebar__title");
     const collectionDescEl = document.querySelector(".collection-sidebar__desc");
-    const collectionName =
-      collectionTitleEl?.textContent?.trim() || "Collection";
+    const collectionName = collectionTitleEl?.textContent?.trim() || "Collection";
     const collectionDesc = collectionDescEl?.textContent?.trim() || "";
 
     const currentIndex = items.findIndex((item) => {
@@ -820,6 +832,7 @@ export default apiInitializer("1.24.0", (api) => {
 
     const hideModal = () => {
       modalOverlay.classList.remove("is-visible");
+      unlockDocumentScroll();
 
       if (activeModalState?.modal === modalOverlay) {
         activeModalState = null;
@@ -828,6 +841,7 @@ export default apiInitializer("1.24.0", (api) => {
 
     const showModal = () => {
       modalOverlay.classList.add("is-visible");
+      lockDocumentScroll();
       applyResponsiveState();
 
       activeModalState = {
@@ -925,16 +939,19 @@ export default apiInitializer("1.24.0", (api) => {
         return;
       }
 
+      wrapper.style.position = "relative";
+      wrapper.style.minHeight = "70vh";
       wrapper.style.visibility = "hidden";
-      wrapper.style.overflow = "hidden";
 
       const adjustIframe = () => {
         wrapper.style.visibility = "visible";
-        iframe.style.display = "block";
+
+        iframe.style.position = "absolute";
+        iframe.style.inset = "0";
         iframe.style.width = "100%";
         iframe.style.height = "100%";
-        iframe.style.minHeight = "100%";
         iframe.style.border = "none";
+        iframe.style.display = "block";
       };
 
       const onResize = throttle(adjustIframe, 100);
@@ -1081,8 +1098,9 @@ export default apiInitializer("1.24.0", (api) => {
 
       modalPanel.classList.remove("external-url-active");
       contentArea.classList.remove("external-url-content-wrapper");
+      contentArea.style.position = "";
+      contentArea.style.minHeight = "";
       contentArea.style.visibility = "";
-      contentArea.style.overflow = "";
       contentArea.innerHTML = "<p>Loading...</p>";
 
       if (!item.topicId) {
