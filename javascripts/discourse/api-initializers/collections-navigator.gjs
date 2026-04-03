@@ -239,6 +239,17 @@ export default apiInitializer("1.24.0", (api) => {
     launcherState.reset();
     document.body.classList.remove("collections-launcher-expanded");
     document.body.classList.remove("collections-is-resizing");
+    unlockDocumentScroll();
+  }
+
+  function lockDocumentScroll() {
+    document.documentElement.classList.add("collections-modal-open");
+    document.body.classList.add("collections-modal-open");
+  }
+
+  function unlockDocumentScroll() {
+    document.documentElement.classList.remove("collections-modal-open");
+    document.body.classList.remove("collections-modal-open");
   }
 
   function ensureSidebarResizer(modal) {
@@ -1231,6 +1242,7 @@ export default apiInitializer("1.24.0", (api) => {
       modalRequestId++;
       pageRequestId++;
       activeModalState = null;
+      unlockDocumentScroll();
       modalOverlay.remove();
       navBar.remove();
     };
