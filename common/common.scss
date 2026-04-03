@@ -1019,3 +1019,8 @@ body.collections-modal-open {
 body.collections-modal-open {
   touch-action: none;
 }
+
+html.collections-modal-open,
+body.collections-modal-open {
+  overflow: hidden;
+}
