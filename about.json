@@ -1,13 +1,16 @@
 {
-  "name": "TODO",
+  "name": "Collections Suite",
   "component": true,
-  "authors": "Discourse",
-  "about_url": "TODO: Put your theme's public repo or Meta topic URL here",
-  "license_url": "TODO: Put your theme's LICENSE URL here",
-  "learn_more": "TODO",
-  "theme_version": "0.0.1",
-  "minimum_discourse_version": null,
+  "license_url": "https://github.com/denvergeeks/discourse-collections-suite/blob/main/LICENSE",
+  "about_url": "https://github.com/denvergeeks/discourse-collections-suite",
+  "authors": "@denvergeeks",
+  "theme_version": "1.0.0",
+  "minimum_discourse_version": "3.4.0",
   "maximum_discourse_version": null,
-  "assets": {},
-  "modifiers": {}
+  "assets": {
+    "icons-sprite": "/assets/my-icons.svg"
+  },
+  "color_schemes": {},
+  "modifiers": {},
+  "learn_more": "https://meta.discourse.org/t/beginners-guide-to-using-discourse-themes/91966"
 }
