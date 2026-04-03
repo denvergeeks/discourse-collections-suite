@@ -1024,3 +1024,45 @@ html.collections-modal-open,
 body.collections-modal-open {
   overflow: hidden;
 }
+
+html.collections-modal-open,
+body.collections-modal-open {
+  overflow: hidden;
+}
+
+.collections-nav-modal {
+  --collections-sidebar-min-width: 72px;
+  --collections-sidebar-rail-width: 72px;
+}
+
+.collections-nav-modal.collections-sidebar-icon-only {
+  .modal-items-sidebar {
+    overflow-x: hidden;
+  }
+
+  .collection-item-link {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.75rem 0.35rem;
+    text-align: center;
+  }
+
+  .collection-item-link .item-title {
+    display: none;
+  }
+
+  .collection-item-link .item-number {
+    margin: 0;
+  }
+
+  .collection-item-link .collections-active-check {
+    display: none;
+  }
+
+  .collection-item-link .collections-external-link-button {
+    margin: 0;
+  }
+}
