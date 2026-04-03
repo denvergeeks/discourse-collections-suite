@@ -630,74 +630,72 @@ body.collections-launcher-expanded {
     box-sizing: border-box;
   }
 
-  .cooked-content.external-url-content-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    min-height: 0;
-    padding: 1.1rem 1.15rem 1.35rem;
-    overflow: hidden;
-    background: var(--secondary);
-    isolation: isolate;
-    box-sizing: border-box;
-  
-    .external-url-header {
-      flex: 0 0 auto;
-      margin: 0 0 1rem;
-      padding: 0;
-      border-bottom: 0;
-      background: transparent;
-  
-      h4 {
-        margin: 0;
-        font-size: 0.96rem;
-      }
-  
-      .external-url-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        color: var(--tertiary);
-        word-break: break-all;
-      }
-    }
-  
-    .iframe-loading {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 10rem;
+.cooked-content.external-url-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 1.1rem 1.15rem 1.35rem;
+  overflow: hidden;
+  background: var(--secondary);
+  box-sizing: border-box;
+
+  .external-url-header {
+    flex: 0 0 auto;
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+
+    h4 {
       margin: 0;
-      color: var(--primary-medium);
-      padding: 1rem 0;
-      background: transparent;
+      font-size: 0.96rem;
     }
-  
-    .external-url-iframe-shell {
-      position: relative;
-      flex: 1 1 auto;
-      min-width: 0;
-      min-height: 0;
-      overflow: hidden;
-      border: 1px solid var(--primary-low);
-      border-radius: 12px;
-      background: var(--secondary);
-      scrollbar-gutter: stable;
-    }
-  
-    .external-topic-iframe {
-      position: absolute;
-      inset: 0;
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 0;
-      border: 0;
-      background: var(--secondary);
+
+    .external-url-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--tertiary);
+      word-break: break-all;
     }
   }
+
+  .external-url-iframe-shell {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--primary-low);
+    border-radius: 12px;
+    background: var(--secondary);
+  }
+
+  .iframe-loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    color: var(--primary-medium);
+    background: var(--secondary);
+    z-index: 1;
+  }
+
+  .external-topic-iframe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: var(--secondary);
+  }
+}
 
   .modal-nav-footer {
     display: grid;
