@@ -781,3 +781,191 @@ body.collections-launcher-expanded {
     }
   }
 }
+
+.collections-nav-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.35);
+
+  &.is-visible {
+    display: flex;
+  }
+}
+
+.collections-nav-modal {
+  --collections-modal-max-width: min(96vw, 1600px);
+  --collections-modal-height: min(92vh, 980px);
+
+  position: relative;
+  width: var(--collections-modal-max-width);
+  max-width: var(--collections-modal-max-width);
+  height: var(--collections-modal-height);
+  max-height: var(--collections-modal-height);
+  margin: 0;
+  background: var(--secondary);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  box-sizing: border-box;
+}
+
+.collections-nav-modal .modal-header,
+.collections-nav-modal .modal-nav-footer {
+  flex: 0 0 auto;
+}
+
+.collections-nav-modal .modal-body-split {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(260px, var(--collections-sidebar-width, 320px)) 12px minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.collections-nav-modal .modal-items-sidebar {
+  min-height: 0;
+  overflow: auto;
+}
+
+.collections-nav-modal .collections-sidebar-resizer {
+  width: 12px;
+  min-width: 12px;
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+}
+
+.collections-nav-modal .collections-sidebar-resizer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2px;
+  height: 100%;
+  background: var(--primary-low);
+  border-radius: 999px;
+}
+
+.collections-nav-modal .modal-content-area {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.collections-nav-modal .modal-content-area .content-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--primary-low);
+  background: var(--secondary);
+}
+
+.collections-nav-modal .modal-content-area .content-title {
+  margin: 0;
+  min-width: 0;
+}
+
+.collections-nav-modal .modal-content-area .content-header-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.collections-nav-modal .modal-content-area .cooked-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 1.25rem;
+  box-sizing: border-box;
+}
+
+.collections-nav-modal
+  .modal-content-area
+  .cooked-content.external-url-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--secondary);
+}
+
+.collections-nav-modal
+  .modal-content-area
+  .cooked-content.external-url-content-wrapper
+  .iframe-loading {
+  flex: 0 0 auto;
+  padding: 1rem 1.25rem 0;
+}
+
+.collections-nav-modal
+  .modal-content-area
+  .cooked-content.external-url-content-wrapper
+  .external-topic-iframe {
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: block;
+  border: 0;
+  background: var(--secondary);
+}
+
+.collections-nav-modal.external-url-active .modal-content-area .cooked-content {
+  scrollbar-gutter: stable;
+}
+
+@media (max-width: 767px) {
+  .collections-nav-modal-overlay {
+    padding: 0;
+  }
+
+  .collections-nav-modal {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .collections-nav-modal .modal-body-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .collections-nav-modal .collections-sidebar-resizer {
+    display: none;
+  }
+
+  .collections-nav-modal .modal-items-sidebar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(82vw, 360px);
+    max-width: 82vw;
+    height: 100%;
+    z-index: 2;
+    background: var(--secondary);
+    border-right: 1px solid var(--primary-low);
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+  }
+
+  .collections-nav-modal .modal-items-sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .collections-nav-modal .modal-content-area {
+    min-width: 0;
+  }
+}
