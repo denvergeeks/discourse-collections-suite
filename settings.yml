@@ -1,2 +1,95 @@
-example_setting:
+collections_navigator_enabled:
   default: true
+  client: true
+
+collections_navigator_debug:
+  default: false
+  client: true
+
+launcher_mode:
+  type: enum
+  default: slider
+  choices:
+    - hidden
+    - button
+    - slider
+  description:
+    en: Show no launcher, a simple button launcher, or the expanding center slider launcher.
+
+launcher_placement:
+  type: enum
+  default: topic-above-posts
+  choices:
+    - topic-title
+    - topic-above-posts
+    - mobile-sticky-bottom
+  description:
+    en: Choose where the collection launcher is inserted.
+
+launcher_label:
+  type: string
+  default: Browse Collection
+  description:
+    en: Fallback label used when current topic title is unavailable.
+
+show_modal_action:
+  type: bool
+  default: true
+  description:
+    en: Show a dedicated icon button that opens the full collection modal.
+
+modal_action_icon:
+  type: string
+  default: bars
+  description:
+    en: Discourse icon name used for the modal open button.
+
+enable_mobile_launcher:
+  type: bool
+  default: true
+  description:
+    en: Enable launcher on mobile topic pages.
+
+enable_desktop_launcher:
+  type: bool
+  default: true
+  description:
+    en: Enable launcher on desktop topic pages.
+
+sticky_mobile_only:
+  type: bool
+  default: true
+  description:
+    en: When placement is mobile-sticky-bottom, keep sticky behavior only on mobile.
+
+slider_starts_expanded:
+  type: bool
+  default: false
+  description:
+    en: Start the slider in expanded mode on first render.
+
+collapse_after_navigation:
+  type: bool
+  default: true
+  description:
+    en: Collapse the slider after previous, next, or modal-open actions.
+
+max_side_label_chars:
+  type: integer
+  default: 22
+  min: 8
+  max: 48
+  description:
+    en: Maximum characters shown for previous and next labels before truncation.
+
+show_pager_text:
+  type: bool
+  default: true
+  description:
+    en: Show the current item position, for example 3/12.
+
+show_center_current_title:
+  type: bool
+  default: true
+  description:
+    en: Show the current collection topic title in the center button.
