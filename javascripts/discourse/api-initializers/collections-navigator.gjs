@@ -961,42 +961,42 @@ export default apiInitializer("1.24.0", (api) => {
       });
     };
 
-const setupIframeHandlers = (container) => {
-  const iframe = container.querySelector(".external-topic-iframe");
-  const loadingDiv = container.querySelector(".iframe-loading");
-  const iframeShell = container.querySelector(".external-url-iframe-shell");
-
-  if (
-    !iframe ||
-    !iframeShell ||
-    !container.classList.contains("external-url-content-wrapper")
-  ) {
-    return;
-  }
-
-  const onLoad = () => {
-    if (loadingDiv) {
-      loadingDiv.style.display = "none";
-    }
-
-    iframeShell.style.visibility = "visible";
-  };
-
-  const onError = () => {
-    if (loadingDiv) {
-      loadingDiv.style.display = "none";
-    }
-
-    iframeShell.style.visibility = "visible";
-    iframe.style.display = "none";
-  };
-
-  iframeShell.style.visibility = "hidden";
-  iframe.style.display = "block";
-
-  iframe.addEventListener("load", onLoad, { once: true });
-  iframe.addEventListener("error", onError, { once: true });
-};
+    const setupIframeHandlers = (container) => {
+      const iframe = container.querySelector(".external-topic-iframe");
+      const loadingDiv = container.querySelector(".iframe-loading");
+      const iframeShell = container.querySelector(".external-url-iframe-shell");
+    
+      if (
+        !iframe ||
+        !iframeShell ||
+        !container.classList.contains("external-url-content-wrapper")
+      ) {
+        return;
+      }
+    
+      const onLoad = () => {
+        if (loadingDiv) {
+          loadingDiv.style.display = "none";
+        }
+    
+        iframeShell.style.visibility = "visible";
+      };
+    
+      const onError = () => {
+        if (loadingDiv) {
+          loadingDiv.style.display = "none";
+        }
+    
+        iframeShell.style.visibility = "visible";
+        iframe.style.display = "none";
+      };
+    
+      iframeShell.style.visibility = "hidden";
+      iframe.style.display = "block";
+    
+      iframe.addEventListener("load", onLoad, { once: true });
+      iframe.addEventListener("error", onError, { once: true });
+    };
 
     const fetchTopicJson = async (topicId, requestId, mode) => {
       const response = await fetch(`/t/${topicId}.json`);
@@ -1088,29 +1088,32 @@ const setupIframeHandlers = (container) => {
       updateNavState(index);
       syncLauncherState();
       contentHeaderActions.innerHTML = "";
-
+      
       if (item.external) {
         modalPanel.classList.add("external-url-active");
         contentArea.classList.add("external-url-content-wrapper");
         contentArea.innerHTML = loadExternalContent(item.href);
         setupIframeHandlers(contentArea);
-
+      
         contentHeaderActions.innerHTML = `
-          <a href="${escapeHtml(
-            item.href
-          )}" target="_blank" rel="noopener noreferrer" class="btn btn-primary collections-open-external-button">
+          <a
+            href="${escapeHtml(item.href)}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary collections-open-external-button"
+          >
             ${externalLinkIcon}
             Open in New Tab
           </a>
         `;
-
+      
         if (mobileMq.matches) {
           setSidebarVisibility(false);
         }
-
+      
         return;
       }
-
+      
       modalPanel.classList.remove("external-url-active");
       contentArea.classList.remove("external-url-content-wrapper");
       contentArea.style.position = "";
@@ -1119,30 +1122,31 @@ const setupIframeHandlers = (container) => {
       contentArea.style.visibility = "";
       contentArea.style.overflow = "";
       contentArea.innerHTML = "<p>Loading...</p>";
-
+      
       if (!item.topicId) {
-        contentArea.innerHTML = "<p>No content</p>";
+        contentArea.innerHTML = "<p>No content.</p>";
         return;
       }
-
+      
       const requestId = ++modalRequestId;
-
+      
       try {
         const data = await fetchTopicJson(item.topicId, requestId, "modal");
+      
         if (!data) {
           return;
         }
-
+      
         const cooked = data.post_stream?.posts?.[0]?.cooked;
-        contentArea.innerHTML = cooked || "<p>No content</p>";
+        contentArea.innerHTML = cooked || "<p>No content.</p>";
         enhanceCooked(contentArea);
       } catch (error) {
         if (requestId !== modalRequestId) {
           return;
         }
-
+      
         debug("error updating modal content", error);
-        contentArea.innerHTML = "<p>Error loading</p>";
+        contentArea.innerHTML = "<p>Error loading content.</p>";
       }
     }, SCROLL_THROTTLE_MS);
 
