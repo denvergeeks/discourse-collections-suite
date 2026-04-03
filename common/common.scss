@@ -17,6 +17,7 @@ body::before {
   &[data-placement="topic-above-posts"] {
     position: relative;
     display: block;
+    display: flex;
     margin: 0 0 1rem;
   }
 
