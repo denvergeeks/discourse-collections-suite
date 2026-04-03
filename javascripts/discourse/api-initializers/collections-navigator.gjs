@@ -35,6 +35,19 @@ export default apiInitializer("1.24.0", (api) => {
     </svg>
   `;
 
+  const navigatorLauncherIcon = `
+    <svg
+      class="fa d-icon svg-icon svg-string"
+      width="1em"
+      height="1em"
+      viewBox="0 0 512 512"
+      aria-hidden="true"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <use href="#collections-suite-open-navigator"></use>
+    </svg>
+  `;
+
   function getScrollBehavior() {
     return window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches
       ? "auto"
@@ -543,9 +556,7 @@ export default apiInitializer("1.24.0", (api) => {
     navBar.className = "collections-item-nav-bar collections-nav-injected";
     navBar.innerHTML = `
       <button class="btn btn--primary collections-nav-toggle" title="Open collection navigator" type="button">
-        <svg class="fa d-icon d-icon-collection-pip svg-icon fa-width-auto prefix-icon svg-string" width="1em" height="1em" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <use href="#collection-pip"></use>
-        </svg>
+        ${navigatorLauncherIcon}
         <span class="nav-text">${escapeHtml(
           renderNavText(collectionName, currentItem, currentIndex, totalItems)
         )}</span>
