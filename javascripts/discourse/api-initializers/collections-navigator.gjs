@@ -262,6 +262,7 @@ export default apiInitializer("1.24.0", (api) => {
     document
       .querySelectorAll(".collections-nav-injected")
       .forEach((el) => el.remove());
+
     document
       .querySelectorAll(".collections-nav-modal-overlay")
       .forEach((el) => el.remove());
@@ -541,8 +542,7 @@ export default apiInitializer("1.24.0", (api) => {
 
     const collectionTitleEl = document.querySelector(".collection-sidebar__title");
     const collectionDescEl = document.querySelector(".collection-sidebar__desc");
-    const collectionName =
-      collectionTitleEl?.textContent?.trim() || "Collection";
+    const collectionName = collectionTitleEl?.textContent?.trim() || "Collection";
     const collectionDesc = collectionDescEl?.textContent?.trim() || "";
 
     const currentIndex = items.findIndex((item) => {
@@ -618,7 +618,9 @@ export default apiInitializer("1.24.0", (api) => {
     const modalOverlay = document.createElement("div");
     modalOverlay.className = "collections-nav-modal-overlay";
     modalOverlay.innerHTML = `
-      <div class="collections-nav-modal collections-modal-with-content" role="dialog" aria-modal="true" aria-label="${escapeHtml(collectionName)} navigator">
+      <div class="collections-nav-modal collections-modal-with-content" role="dialog" aria-modal="true" aria-label="${escapeHtml(
+        collectionName
+      )} navigator">
         <div class="modal-header">
           <div class="modal-header-side modal-header-side-left">
             <button class="modal-sidebar-toggle btn btn-flat btn--toggle no-text btn-icon narrow-desktop" aria-label="Toggle sidebar" type="button" title="Toggle sidebar">
