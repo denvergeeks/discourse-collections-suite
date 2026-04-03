@@ -453,16 +453,6 @@ export default apiInitializer("1.24.0", (api) => {
 
   function loadExternalContent(url) {
     return `
-      <div class="external-url-header">
-        <h4>
-          <a href="${escapeHtml(
-            url
-          )}" target="_blank" rel="noopener noreferrer" class="external-url-link">
-            ${escapeHtml(url.replace(/^https?:\/\//, ""))}
-            ${externalLinkIcon}
-          </a>
-        </h4>
-      </div>
       <div class="iframe-loading">Loading external content...</div>
       <iframe
         src="${escapeHtml(url)}"
@@ -924,19 +914,16 @@ export default apiInitializer("1.24.0", (api) => {
         return;
       }
 
-      wrapper.style.position = "relative";
-      wrapper.style.minHeight = "70vh";
       wrapper.style.visibility = "hidden";
+      wrapper.style.overflow = "hidden";
 
       const adjustIframe = () => {
         wrapper.style.visibility = "visible";
-
-        iframe.style.position = "absolute";
-        iframe.style.inset = "0";
+        iframe.style.display = "block";
         iframe.style.width = "100%";
         iframe.style.height = "100%";
+        iframe.style.minHeight = "100%";
         iframe.style.border = "none";
-        iframe.style.display = "block";
       };
 
       const onResize = throttle(adjustIframe, 100);
@@ -1083,9 +1070,8 @@ export default apiInitializer("1.24.0", (api) => {
 
       modalPanel.classList.remove("external-url-active");
       contentArea.classList.remove("external-url-content-wrapper");
-      contentArea.style.position = "";
-      contentArea.style.minHeight = "";
       contentArea.style.visibility = "";
+      contentArea.style.overflow = "";
       contentArea.innerHTML = "<p>Loading...</p>";
 
       if (!item.topicId) {
