@@ -541,7 +541,8 @@ export default apiInitializer("1.24.0", (api) => {
 
     const collectionTitleEl = document.querySelector(".collection-sidebar__title");
     const collectionDescEl = document.querySelector(".collection-sidebar__desc");
-    const collectionName = collectionTitleEl?.textContent?.trim() || "Collection";
+    const collectionName =
+      collectionTitleEl?.textContent?.trim() || "Collection";
     const collectionDesc = collectionDescEl?.textContent?.trim() || "";
 
     const currentIndex = items.findIndex((item) => {
@@ -969,11 +970,32 @@ export default apiInitializer("1.24.0", (api) => {
         return;
       }
 
-      wrapper.style.position = "relative";
-      wrapper.style.minHeight = "70vh";
-      wrapper.style.visibility = "hidden";
+      const modal = wrapper.closest(".collections-nav-modal");
+      const contentShell = wrapper.closest(".modal-content-area");
+      const contentHeader = contentShell?.querySelector(".content-header");
 
       const adjustIframe = () => {
+        if (!modal || !contentShell) {
+          return;
+        }
+
+        const modalRect = modal.getBoundingClientRect();
+        const headerHeight = contentHeader?.offsetHeight || 0;
+        const footerHeight =
+          modal.querySelector(".modal-nav-footer")?.offsetHeight || 0;
+
+        const shellStyles = getComputedStyle(contentShell);
+        const shellVerticalPadding =
+          parseFloat(shellStyles.paddingTop || 0) +
+          parseFloat(shellStyles.paddingBottom || 0);
+
+        const availableHeight =
+          modalRect.height - headerHeight - footerHeight - shellVerticalPadding - 24;
+
+        wrapper.style.position = "relative";
+        wrapper.style.height = `${Math.max(320, Math.floor(availableHeight))}px`;
+        wrapper.style.minHeight = "0";
+        wrapper.style.overflow = "hidden";
         wrapper.style.visibility = "visible";
 
         iframe.style.position = "absolute";
@@ -1005,8 +1027,12 @@ export default apiInitializer("1.24.0", (api) => {
         window.removeEventListener("resize", onResize);
       };
 
+      wrapper.style.visibility = "hidden";
+
       iframe.addEventListener("load", onLoad, { once: true });
       iframe.addEventListener("error", onError, { once: true });
+
+      window.requestAnimationFrame(adjustIframe);
 
       addCleanup(() => {
         window.removeEventListener("resize", onResize);
@@ -1129,8 +1155,10 @@ export default apiInitializer("1.24.0", (api) => {
       modalPanel.classList.remove("external-url-active");
       contentArea.classList.remove("external-url-content-wrapper");
       contentArea.style.position = "";
+      contentArea.style.height = "";
       contentArea.style.minHeight = "";
       contentArea.style.visibility = "";
+      contentArea.style.overflow = "";
       contentArea.innerHTML = "<p>Loading...</p>";
 
       if (!item.topicId) {
@@ -1165,6 +1193,10 @@ export default apiInitializer("1.24.0", (api) => {
       syncSliderEdgeState();
       scrollSliderToActive();
       syncSidebarRailState(modalPanel);
+
+      if (contentArea?.classList.contains("external-url-content-wrapper")) {
+        setupIframeHandlers(contentArea);
+      }
     }, 50);
 
     window.addEventListener("resize", onResize);
